@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class Snake : MonoBehaviour
 {
     public static Snake Instance { get; private set; }
@@ -16,7 +15,6 @@ public class Snake : MonoBehaviour
     private float timer;
     private List<SnakePosition> bodyPositions;
     private bool isAlive = true;
-    private Rigidbody2D body;
     private void Awake()
     {
         Instance = this;
@@ -24,7 +22,6 @@ public class Snake : MonoBehaviour
         currentPosition = new Vector2Int(10, 10);
         bodyPositions = new List<SnakePosition>();
         currentDirection = Direction.Right;
-        body = GetComponent<Rigidbody2D>();
     }
     private void Update()
     {
@@ -69,9 +66,10 @@ public class Snake : MonoBehaviour
             timer -= timerMax;
             RenderBody();
             Grow();
+            transform.eulerAngles = new Vector3(0, 0, GetAngleFromVector(GetDirectionVector(currentDirection)));
         }
-        body.MovePosition(currentPosition);
-        transform.eulerAngles = new Vector3(0, 0, GetAngleFromVector(GetDirectionVector(currentDirection)));
+
+        transform.position = new Vector3(currentPosition.x, currentPosition.y);
 
     }
 
